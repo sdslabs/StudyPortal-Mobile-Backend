@@ -21,7 +21,8 @@ defmodule StudyPortalWeb.CourseJSON do
       course_code: course.course_code,
       course_name: course.course_name,
       files: course.files,
-      department: course.department
+      branch: course.branch,
+      semester: course.semester
     }
   end
 end

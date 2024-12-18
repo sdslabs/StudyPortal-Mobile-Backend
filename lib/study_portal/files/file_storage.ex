@@ -4,9 +4,11 @@ defmodule StudyPortal.Files.FileStorage do
 
   schema "file_storages" do
     field :name, :string
-    field :status, :string
-    field :course_code, {:array, :string}
+    field :status, Ecto.Enum, values: [:pending, :approved, :rejected, :not_uploaded]
+    field :course_id, :integer
     field :s3_url, :string
+    field :type, Ecto.Enum, values: [:tutorial, :book, :pyq, :notes, :other]
+    field :description, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -14,7 +16,7 @@ defmodule StudyPortal.Files.FileStorage do
   @doc false
   def changeset(file_storage, attrs) do
     file_storage
-    |> cast(attrs, [:name, :course_code, :s3_url, :status])
-    |> validate_required([:name, :course_code, :s3_url, :status])
+    |> cast(attrs, [:name, :status, :course_id, :s3_url, :type, :description])
+    |> validate_required([:name, :status, :course_id, :s3_url, :type, :description])
   end
 end
