@@ -9,8 +9,6 @@ defmodule StudyPortalWeb.Router do
     pipe_through :api
 
     get "/ping", PingController, :index
-    get "/show", CourseController, :index
-    get "/lmao", CourseController, :lmao
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

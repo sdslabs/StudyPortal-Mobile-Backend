@@ -6,6 +6,8 @@ defmodule StudyPortal.Repo.Migrations.CreateUsers do
       add :enrollment_number, :integer
       add :name, :string
       add :arcus_id, :integer
+      add :hash, :string
+      add :salt, :string
 
       timestamps(type: :utc_datetime)
     end

@@ -20,7 +20,9 @@ defmodule StudyPortalWeb.UserJSON do
       id: user.id,
       enrollment_number: user.enrollment_number,
       name: user.name,
-      arcus_id: user.arcus_id
+      arcus_id: user.arcus_id,
+      hash: user.hash,
+      salt: user.salt
     }
   end
 end
