@@ -5,9 +5,9 @@ defmodule StudyPortal.Repo.Migrations.CreateUsers do
     create table(:users) do
       add :enrollment_number, :integer
       add :name, :string
-      add :course_code, :string
-      add :s3_url, :string
-      add :status, :string
+      add :arcus_id, :integer
+      add :hash, :string
+      add :salt, :string
 
       timestamps(type: :utc_datetime)
     end

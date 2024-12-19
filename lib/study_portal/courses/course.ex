@@ -5,8 +5,9 @@ defmodule StudyPortal.Courses.Course do
   schema "courses" do
     field :course_code, :string
     field :course_name, :string
-    field :files, :string
-    field :department, :string
+    field :files, {:array, :integer}
+    field :branch, :integer
+    field :semester, :integer
 
     timestamps(type: :utc_datetime)
   end
@@ -14,7 +15,8 @@ defmodule StudyPortal.Courses.Course do
   @doc false
   def changeset(course, attrs) do
     course
-    |> cast(attrs, [:course_code, :course_name, :files, :department])
-    |> validate_required([:course_code, :course_name, :files, :department])
+    |> cast(attrs, [:course_code, :course_name, :files, :branch, :semester])
+    |> validate_required([:course_code, :course_name, :files, :branch, :semester])
+    |> unique_constraint(:course_code)
   end
 end

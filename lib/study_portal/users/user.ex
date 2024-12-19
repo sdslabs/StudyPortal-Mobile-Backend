@@ -4,10 +4,10 @@ defmodule StudyPortal.Users.User do
 
   schema "users" do
     field :name, :string
-    field :status, :string
     field :enrollment_number, :integer
-    field :course_code, :string
-    field :s3_url, :string
+    field :arcus_id, :integer
+    field :hash, :string
+    field :salt, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -15,7 +15,7 @@ defmodule StudyPortal.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:enrollment_number, :name, :course_code, :s3_url, :status])
-    |> validate_required([:enrollment_number, :name, :course_code, :s3_url, :status])
+    |> cast(attrs, [:name, :enrollment_number, :arcus_id, :hash, :salt])
+    |> validate_required([:name, :enrollment_number, :arcus_id, :hash, :salt])
   end
 end
