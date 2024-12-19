@@ -28,16 +28,26 @@ defmodule StudyPortalWeb.FileStorageController do
   def update(conn, %{"id" => id, "file_storage" => file_storage_params}) do
     file_storage = Files.get_file_storage!(id)
 
-    with {:ok, %FileStorage{} = file_storage} <- Files.update_file_storage(file_storage, file_storage_params) do
+    with {:ok, %FileStorage{} = file_storage} <-
+           Files.update_file_storage(file_storage, file_storage_params) do
       render(conn, :show, file_storage: file_storage)
     end
   end
 
   def delete(conn, %{"id" => id}) do
     file_storage = Files.get_file_storage!(id)
-
+    # TODO: also add code to delete the file from the S3 bucket later
     with {:ok, %FileStorage{}} <- Files.delete_file_storage(file_storage) do
       send_resp(conn, :no_content, "")
     end
+  end
+
+  @doc """
+  Fetches all files with a 'pending' status.
+  """
+  def pending_files(conn, _params) do
+    pending_files = Files.get_files_by_status("pending")
+
+    render(conn, "index.json", file_storages: pending_files)
   end
 end

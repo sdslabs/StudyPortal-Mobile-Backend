@@ -9,6 +9,10 @@ defmodule StudyPortalWeb.Router do
     pipe_through :api
 
     get "/ping", PingController, :index
+    get "/course_material/:course_name", CourseMaterialController, :index
+    get "/pending-files", FileStorageController, :pending_files
+    delete "/reject-file/:id", FileStorageController, :delete
+    patch "/accept-file/:id", FileStorageController, :update
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
