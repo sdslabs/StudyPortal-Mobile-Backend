@@ -6,8 +6,8 @@ defmodule StudyPortal.Users.User do
     field :name, :string
     field :enrollment_number, :integer
     field :arcus_id, :integer
-    field :hash, :string
-    field :salt, :string
+    field :password_hash, :string
+    field :password, :string, virtual: true
 
     timestamps(type: :utc_datetime)
   end
@@ -15,7 +15,16 @@ defmodule StudyPortal.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :enrollment_number, :arcus_id, :hash, :salt])
-    |> validate_required([:name, :enrollment_number, :arcus_id, :hash, :salt])
+    |> cast(attrs, [:name, :enrollment_number, :arcus_id, :password])
+    |> validate_required([:name, :enrollment_number, :arcus_id, :password])
+    |> validate_length(:password, min: 6)
+    |> put_password_hash()
+  end
+
+  defp put_password_hash(changeset) do
+    case get_change(changeset, :password) do
+      nil -> changeset
+      password -> put_change(changeset, :password_hash, Bcrypt.hash_pwd_salt(password))
+    end
   end
 end

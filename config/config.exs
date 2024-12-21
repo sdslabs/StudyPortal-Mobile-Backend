@@ -11,6 +11,11 @@ config :study_portal,
   ecto_repos: [StudyPortal.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+# Configures Guardian
+config :study_portal, StudyPortal.Users.Guardian,
+  issuer: "StudyPortal",
+  secret_key: "HAYASAKA_IS_BEST_GIRL"
+
 # Configures the endpoint
 config :study_portal, StudyPortalWeb.Endpoint,
   url: [host: "localhost"],
@@ -60,6 +65,7 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

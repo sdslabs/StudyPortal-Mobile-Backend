@@ -5,10 +5,28 @@ defmodule StudyPortalWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug Guardian.Plug.Pipeline,
+      module: StudyPortal.Users.Guardian,
+      error_handler: StudyPortal.Users.AuthErrorHandler
+
+      plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+      plug Guardian.Plug.LoadResource, allow_blank: "false"
+  end
+
   scope "/api", StudyPortalWeb do
     pipe_through :api
 
     get "/ping", PingController, :index
+    post "/register", AuthController, :register
+    post "/login", AuthController, :login
+  end
+
+  scope "/api", StudyPortalWeb do
+    pipe_through [:api, :auth]
+
+    get "/protected", AuthController, :protected
+    post "/logout", AuthController, :logout
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
