@@ -47,4 +47,9 @@ defmodule StudyPortalWeb.BookmarkPinController do
     pins = BookmarksPins.get_bookmarks_pins_by_userid(user_id).pins
     render(conn, :branches, bookmark_pin: pins)
   end
+
+  def get_bookmarks(conn, %{"user_id" => user_id}) do
+    bookmarks = BookmarksPins.get_bookmarks_pins_by_userid(user_id).bookmarks
+    render(conn, :files, bookmark_pin: bookmarks)
+  end
 end

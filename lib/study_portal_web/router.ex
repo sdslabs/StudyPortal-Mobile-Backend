@@ -12,6 +12,7 @@ defmodule StudyPortalWeb.Router do
     get "/branches", BranchController, :index
     get "/courses", CourseController, :index
     get "/pins", BookmarkPinController, :get_pins
+    get "/bookmarks", BookmarkPinController, :get_bookmarks
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
