@@ -40,4 +40,11 @@ defmodule StudyPortalWeb.BookmarkPinController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  # TODO: Currently this accepts user_id as a body parameter. Once auth is implemented,
+  # This is to be recovered from JWT instead.
+  def get_pins(conn, %{"user_id" => user_id}) do
+    pins = BookmarksPins.get_bookmarks_pins_by_userid(user_id).pins
+    render(conn, :branches, bookmark_pin: pins)
+  end
 end

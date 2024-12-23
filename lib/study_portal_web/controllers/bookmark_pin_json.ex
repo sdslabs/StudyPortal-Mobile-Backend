@@ -1,5 +1,6 @@
 defmodule StudyPortalWeb.BookmarkPinJSON do
   alias StudyPortal.BookmarksPins.BookmarkPin
+  alias StudyPortal.Branches.Branch
 
   @doc """
   Renders a list of bookmarks_pins.
@@ -21,6 +22,18 @@ defmodule StudyPortalWeb.BookmarkPinJSON do
       userid: bookmark_pin.userid,
       bookmarks: bookmark_pin.bookmarks,
       pins: bookmark_pin.pins
+    }
+  end
+
+  def branches(%{bookmark_pin: bookmark_pin}) do
+    %{data: Enum.map(bookmark_pin, fn(x) -> branch_data(StudyPortal.Branches.get_branch!(x)) end)}
+  end
+
+  defp branch_data(%Branch{} = branch) do
+    %{
+      id: branch.id,
+      name: branch.name,
+      department: branch.department
     }
   end
 end
