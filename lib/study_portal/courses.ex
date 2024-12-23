@@ -101,4 +101,9 @@ defmodule StudyPortal.Courses do
   def change_course(%Course{} = course, attrs \\ %{}) do
     Course.changeset(course, attrs)
   end
+
+  def get_courses_by_branch(branch_id) do
+    from(c in Course, where: c.branch == ^branch_id)
+    |> Repo.all()
+  end
 end

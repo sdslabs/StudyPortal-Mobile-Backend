@@ -10,6 +10,7 @@ defmodule StudyPortalWeb.Router do
 
     get "/ping", PingController, :index
     get "/branches", BranchController, :index
+    get "/courses", CourseController, :index
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
