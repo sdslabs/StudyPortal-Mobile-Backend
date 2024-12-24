@@ -57,7 +57,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
 
   # TODO: Add some special message if pin/bookmark already exists
   # TODO: Check if branch_id is a valid either by changeset or directly in controller
-  def add_pins(conn, %{"user_id" => user_id, "branch_id" => branch_id}) do
+  def add_pin(conn, %{"user_id" => user_id, "branch_id" => branch_id}) do
     bookmarks_pins = BookmarksPins.get_bookmarks_pins_by_userid(user_id)
     pins = bookmarks_pins.pins
     {branch_id, ""} = Integer.parse(branch_id)
@@ -78,7 +78,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
     |> send_resp(201, Jason.encode!("Pin Added"))
   end
 
-  def add_bookmarks(conn, %{"user_id" => user_id, "file_id" => file_id}) do
+  def add_bookmark(conn, %{"user_id" => user_id, "file_id" => file_id}) do
     bookmarks_pins = BookmarksPins.get_bookmarks_pins_by_userid(user_id)
     bookmarks = bookmarks_pins.bookmarks
     {file_id, ""} = Integer.parse(file_id)
@@ -97,5 +97,47 @@ defmodule StudyPortalWeb.BookmarkPinController do
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(201, Jason.encode!("Bookmark Added"))
+  end
+
+  def remove_pin(conn, %{"user_id" => user_id, "branch_id" => branch_id}) do
+    bookmarks_pins = BookmarksPins.get_bookmarks_pins_by_userid(user_id)
+    pins = bookmarks_pins.pins
+    {branch_id, ""} = Integer.parse(branch_id)
+
+    if branch_id in pins do
+      updated_bookmarks_pins = %BookmarkPin{
+        bookmarks_pins
+        | pins: List.delete(pins, branch_id)
+      }
+
+      BookmarksPins.update_bookmark_pin(bookmarks_pins, %{
+        pins: updated_bookmarks_pins.pins
+      })
+    end
+
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(201, Jason.encode!("Pin Deleted"))
+  end
+
+  def remove_bookmark(conn, %{"user_id" => user_id, "file_id" => file_id}) do
+    bookmarks_pins = BookmarksPins.get_bookmarks_pins_by_userid(user_id)
+    bookmarks = bookmarks_pins.bookmarks
+    {file_id, ""} = Integer.parse(file_id)
+
+    if file_id in bookmarks do
+      updated_bookmarks_pins = %BookmarkPin{
+        bookmarks_pins
+        | bookmarks: List.delete(bookmarks, file_id)
+      }
+
+      BookmarksPins.update_bookmark_pin(bookmarks_pins, %{
+        bookmarks: updated_bookmarks_pins.bookmarks
+      })
+    end
+
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(201, Jason.encode!("Bookmark Deleted"))
   end
 end
