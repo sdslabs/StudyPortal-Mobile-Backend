@@ -13,6 +13,8 @@ defmodule StudyPortalWeb.Router do
     get "/pending-files", FileStorageController, :pending_files
     delete "/reject-file/:id", FileStorageController, :delete
     patch "/accept-file/:id", FileStorageController, :update
+    post "/upload-file", FileStorageController, :give_url
+    patch "/upload-file-complete", FileStorageController, :complete_upload
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

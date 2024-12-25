@@ -101,4 +101,9 @@ defmodule StudyPortal.Courses do
   def change_course(%Course{} = course, attrs \\ %{}) do
     Course.changeset(course, attrs)
   end
+
+  # Get a course by course_code
+  def get_course_by_code(course_code) do
+    Repo.get_by(Course, course_code: course_code)
+  end
 end
