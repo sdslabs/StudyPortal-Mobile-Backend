@@ -9,11 +9,11 @@ defmodule StudyPortalWeb.Router do
     pipe_through :api
 
     get "/ping", PingController, :index
-    get "/course_material/:course_name", CourseMaterialController, :index
+    get "/course-mat/:id", FileStorageController, :give_get_url
     get "/pending-files", FileStorageController, :pending_files
     delete "/reject-file", FileStorageController, :delete
     patch "/accept-file/:id", FileStorageController, :update
-    post "/upload-file", FileStorageController, :give_url
+    post "/upload-file", FileStorageController, :give_put_url
     patch "/upload-file-complete", FileStorageController, :complete_upload
   end
 

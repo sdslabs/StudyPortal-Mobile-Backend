@@ -77,7 +77,7 @@ defmodule StudyPortalWeb.FileStorageController do
   @doc """
   Generates a simple presigned URL for uploading a file to the S3 bucket.
   """
-  def give_url(conn, %{
+  def give_put_url(conn, %{
         "course_code" => course_code,
         "filename" => filename,
         "description" => description,
@@ -128,6 +128,52 @@ defmodule StudyPortalWeb.FileStorageController do
             conn
             |> put_status(:internal_server_error)
             |> json(%{error: "Failed to generate presigned URL", reason: reason})
+        end
+    end
+  end
+
+  @doc """
+  Generates a presigned URL for downloading a file from the S3 bucket.
+  """
+  def give_get_url(conn, %{"id" => id}) do
+    case Files.get_file_storage!(id) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> json(%{
+          error: "Failed to generate presigned URL",
+          reason: "File storage record with id #{id} not found."
+        })
+
+      file_storage ->
+        bucket_name = System.get_env("S3_BUCKET_NAME")
+        region = System.get_env("S3_REGION")
+
+        s3_url = file_storage.s3_url
+
+        object_key =
+          s3_url
+          |> URI.parse()
+          |> Map.get(:path)
+          |> String.trim_leading("/")
+
+        presign_options = [
+          query_params: [],
+          expires_in: 3600
+        ]
+
+        case ExAws.Config.new(:s3, region: region)
+             |> ExAws.S3.presigned_url(:get, bucket_name, object_key, presign_options) do
+          {:ok, presigned_url} ->
+            json(conn, %{url: presigned_url})
+
+          {:error, reason} ->
+            conn
+            |> put_status(:internal_server_error)
+            |> json(%{
+              error: "Failed to generate presigned URL",
+              reason: reason
+            })
         end
     end
   end
