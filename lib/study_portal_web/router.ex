@@ -15,7 +15,7 @@ defmodule StudyPortalWeb.Router do
     delete "/reject-file", FileStorageController, :delete
     patch "/accept-file/:id", FileStorageController, :update
     post "/upload-file", FileStorageController, :give_put_url
-    patch "/upload-file-complete", FileStorageController, :complete_upload
+    patch "/upload-file-complete", FileStorageController, :upload_file_complete
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

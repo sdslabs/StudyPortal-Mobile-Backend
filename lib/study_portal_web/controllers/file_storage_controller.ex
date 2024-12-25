@@ -177,4 +177,38 @@ defmodule StudyPortalWeb.FileStorageController do
         end
     end
   end
+
+  @doc """
+  Marks the file as "pending" in the database after the upload is complete.
+  AWS responds with confirmation for a completed upload, and this endpoint updates the database.
+  """
+  def upload_file_complete(conn, %{"id" => id}) do
+    case Files.get_file_storage!(id) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> json(%{
+          error: "File not found",
+          reason: "File storage record with id #{id} not found."
+        })
+
+      file_storage ->
+        case Files.update_file_storage(file_storage, %{status: "pending"}) do
+          {:ok, _updated_file_storage} ->
+            conn
+            |> put_status(:ok)
+            |> json(%{
+              message: "File status updated to 'pending'",
+            })
+
+          {:error, changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> json(%{
+              error: "Failed to update file status",
+              reason: changeset
+            })
+        end
+    end
+  end
 end
