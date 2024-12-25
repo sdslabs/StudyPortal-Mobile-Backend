@@ -11,7 +11,7 @@ defmodule StudyPortalWeb.Router do
     get "/ping", PingController, :index
     get "/course_material/:course_name", CourseMaterialController, :index
     get "/pending-files", FileStorageController, :pending_files
-    delete "/reject-file/:id", FileStorageController, :delete
+    delete "/reject-file", FileStorageController, :delete
     patch "/accept-file/:id", FileStorageController, :update
     post "/upload-file", FileStorageController, :give_url
     patch "/upload-file-complete", FileStorageController, :complete_upload

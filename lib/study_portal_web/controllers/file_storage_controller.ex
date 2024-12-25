@@ -37,26 +37,28 @@ defmodule StudyPortalWeb.FileStorageController do
   def delete(conn, %{"id" => id}) do
     file_storage = Files.get_file_storage!(id)
 
-    # Extract bucket and object key from the S3 URL
     s3_url = file_storage.s3_url
-    # Replace with your bucket name
-    bucket = "your-s3-bucket-name"
-    object_key = URI.parse(s3_url).path |> String.trim_leading("/")
+    bucket = System.get_env("S3_BUCKET_NAME")
 
-    # Attempt to delete the file from the S3 bucket
+    object_key =
+      s3_url
+      |> URI.parse()
+      |> Map.get(:path)
+      |> String.trim_leading("/")
+
     s3_deletion_result =
       ExAws.S3.delete_object(bucket, object_key)
       |> ExAws.request()
 
     case s3_deletion_result do
       {:ok, _response} ->
-        # If the file is successfully deleted from S3, delete the DB record
         with {:ok, %FileStorage{}} <- Files.delete_file_storage(file_storage) do
-          send_resp(conn, :no_content, "")
+          conn
+          |> put_status(:ok)
+          |> json(%{message: "File successfully deleted from S3 and database"})
         end
 
       {:error, reason} ->
-        # Handle S3 deletion failure
         conn
         |> put_status(:unprocessable_entity)
         |> json(%{error: "Failed to delete file from S3", details: reason})
