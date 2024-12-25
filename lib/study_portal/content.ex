@@ -7,20 +7,20 @@ defmodule StudyPortal.Content do
   @doc """
   Fetches all course material (files) for a given course name.
   """
-  def get_course_material_by_name(course_name) do
+  def get_course_material_by_code(course_code) do
     query =
       from fs in FileStorage,
         join: c in Course,
         on: c.id == fs.course_id,
-        where: c.course_name == ^course_name,
+        where: c.course_code == ^course_code,
         where: fs.status == :approved,
         select: %{
+          file_id: fs.id,
           file_name: fs.name,
           file_description: fs.description,
           file_type: fs.type,
-          file_status: fs.status,
           file_s3_url: fs.s3_url,
-          course_name: c.course_name,
+          course_code: c.course_code,
           inserted_at: fs.inserted_at
         }
 
