@@ -41,3 +41,15 @@ curl --location 'http://localhost:4000/api/login' \
     "password": "password123"
 }'
 ```
+
+```bash
+curl --location 'http://localhost:4000/api/protected' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJTdHVkeVBvcnRhbCIsImV4cCI6MTczNzY4NDQxNSwiaWF0IjoxNzM1MjY1MjE1LCJpc3MiOiJTdHVkeVBvcnRhbCIsImp0aSI6ImI1MDRhZTJlLTEzNmEtNDNhNi1hZmRjLTFiMjYyMTAzOTA5YSIsIm5iZiI6MTczNTI2NTIxNCwic3ViIjoiVXNlcjoxIiwidHlwIjoiYWNjZXNzIn0.GIvRgWmzfi2Hi1uGG90YOz8yV6E2xric39eOEkEsntjKoPqpxqVfHGJFurfVdWYQbA-JK091UnsDkyfk-vghUQ' \
+--header 'Content-Type: application/json'
+```
+
+```bash
+curl --location --request POST 'http://localhost:4000/api/logout' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJTdHVkeVBvcnRhbCIsImV4cCI6MTczNzY4NDQxNSwiaWF0IjoxNzM1MjY1MjE1LCJpc3MiOiJTdHVkeVBvcnRhbCIsImp0aSI6ImI1MDRhZTJlLTEzNmEtNDNhNi1hZmRjLTFiMjYyMTAzOTA5YSIsIm5iZiI6MTczNTI2NTIxNCwic3ViIjoiVXNlcjoxIiwidHlwIjoiYWNjZXNzIn0.GIvRgWmzfi2Hi1uGG90YOz8yV6E2xric39eOEkEsntjKoPqpxqVfHGJFurfVdWYQbA-JK091UnsDkyfk-vghUQ' \
+--header 'Content-Type: application/json'
+```

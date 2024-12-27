@@ -2,7 +2,7 @@ defmodule StudyPortalWeb.AuthController do
   use StudyPortalWeb, :controller
 
   alias StudyPortal.Users
-  alias StudyPortal.Users.{User, Guardian}
+  alias StudyPortal.Users.Guardian
 
   def register(conn, %{"user" => user_params}) do
     case Users.create_user(user_params) do
@@ -27,7 +27,9 @@ defmodule StudyPortalWeb.AuthController do
         {:ok, token, _claims} = Guardian.encode_and_sign(user)
 
         conn
-        |> json(%{token: token})
+        |> put_status(:created)
+        |> put_resp_cookie("token", token, http_only: true, secure: true)
+        |> json(%{message: "Successfully logged in"})
 
       {:error, :invalid_credentials} ->
         conn

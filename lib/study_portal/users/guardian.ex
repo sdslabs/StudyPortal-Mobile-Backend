@@ -7,9 +7,9 @@ defmodule StudyPortal.Users.Guardian do
     {:ok, "User:#{user.id}"}
   end
 
-  def subject_for_token(_type, _claims) do
-    {:error, "Unknown resource type"}
-  end
+  # def subject_for_token(_type, _claims) do
+  #   {:error, "Unknown resource type"}
+  # end
 
   def resource_from_claims(claims) do
     case claims["sub"] do

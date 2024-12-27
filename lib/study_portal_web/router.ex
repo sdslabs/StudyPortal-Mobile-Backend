@@ -10,7 +10,7 @@ defmodule StudyPortalWeb.Router do
       module: StudyPortal.Users.Guardian,
       error_handler: StudyPortal.Users.AuthErrorHandler
 
-      plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+      plug Guardian.Plug.VerifyHeader, scheme: "Bearer"
       plug Guardian.Plug.LoadResource, allow_blank: "false"
   end
 
