@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :study_portal, StudyPortal.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "password",
   hostname: "localhost",
   database: "studyportal",
   stacktrace: true,

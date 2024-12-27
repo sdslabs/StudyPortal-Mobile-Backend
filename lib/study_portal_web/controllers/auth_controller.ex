@@ -40,17 +40,28 @@ defmodule StudyPortalWeb.AuthController do
 
   def logout(conn, _params) do
     jwt = Guardian.Plug.current_token(conn)
-    Guardian.revoke(jwt)
 
-    conn
-    |> json(%{message: "Successfully logged out"})
+    case Guardian.revoke(jwt) do
+      {:ok, _claims} ->
+        conn
+        |> put_status(:ok)
+        |> json(%{message: "Logged out successfully"})
+
+      {:error, reason} ->
+        conn
+        |> put_status(:unauthorized)
+        |> json(%{error: reason})
+    end
   end
 
   def protected(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
 
     conn
-    |> json(%{message: "This is a protected route", user_enrollment_number: user.enrollment_number})
+    |> json(%{
+      message: "This is a protected route",
+      user_enrollment_number: user.enrollment_number
+    })
   end
 
   defp format_changeset_errors(changeset) do

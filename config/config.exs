@@ -11,10 +11,20 @@ config :study_portal,
   ecto_repos: [StudyPortal.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+#Configures Guardian DB
+config :guardian, Guardian.DB,
+  repo: StudyPortal.Repo,
+  schema_name: "guardian_tokens",
+  sweep_interval: 60
+
 # Configures Guardian
 config :study_portal, StudyPortal.Users.Guardian,
   issuer: "StudyPortal",
-  secret_key: "HAYASAKA_IS_BEST_GIRL"
+  secret_key: "HAYASAKA_IS_BEST_GIRL",
+  token_ttl: %{default: 1_000_000},
+  allowed_algos: ["HS512"],
+  verify_module: Guardian.JWT,
+  hooks: Guardian.DB
 
 # Configures the endpoint
 config :study_portal, StudyPortalWeb.Endpoint,

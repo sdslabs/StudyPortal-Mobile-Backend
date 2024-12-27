@@ -17,7 +17,8 @@ defmodule StudyPortal.Application do
       # Start a worker by calling: StudyPortal.Worker.start_link(arg)
       # {StudyPortal.Worker, arg},
       # Start to serve requests, typically the last entry
-      StudyPortalWeb.Endpoint
+      StudyPortalWeb.Endpoint,
+      {Guardian.DB.Token.SweeperServer, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
