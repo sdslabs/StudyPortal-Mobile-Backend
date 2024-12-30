@@ -3,7 +3,7 @@ defmodule StudyPortal.Repo.Migrations.CreateBookmarksPins do
 
   def change do
     create table(:bookmarks_pins) do
-      add :userid, references(:user, on_delete: :nothing)
+      add :userid, references(:users, on_delete: :nothing)
       add :bookmarks, {:array, :integer}
       add :pins, {:array, :integer}
 
