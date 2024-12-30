@@ -10,21 +10,19 @@ defmodule StudyPortalWeb.Router do
       module: StudyPortal.Users.Guardian,
       error_handler: StudyPortal.Users.AuthErrorHandler
 
-      plug Guardian.Plug.VerifyHeader, scheme: "Bearer"
-      plug Guardian.Plug.LoadResource, allow_blank: "false"
+    plug Guardian.Plug.VerifyHeader, scheme: "Bearer"
+    plug Guardian.Plug.LoadResource, allow_blank: "false"
   end
 
   scope "/api", StudyPortalWeb do
     pipe_through :api
-
+    # no-auth
     get "/ping", PingController, :index
     post "/register", AuthController, :register
     post "/login", AuthController, :login
+    # user
     get "/get-file/:id", FileStorageController, :give_get_url
     get "/course-mat/:course_code", CourseMaterialController, :index
-    get "/pending-files", FileStorageController, :pending_files
-    delete "/reject-file", FileStorageController, :delete
-    patch "/accept-file/:id", FileStorageController, :update
     post "/upload-file", FileStorageController, :give_put_url
     patch "/upload-file-complete", FileStorageController, :upload_file_complete
     get "/branches", BranchController, :index
@@ -35,6 +33,10 @@ defmodule StudyPortalWeb.Router do
     post "/add-bookmark", BookmarkPinController, :add_bookmark
     delete "/remove-bookmark", BookmarkPinController, :remove_bookmark
     delete "/remove-pin", BookmarkPinController, :remove_pin
+    # admin
+    delete "/reject-file", FileStorageController, :delete
+    patch "/approve-file", FileStorageController, :update
+    get "/pending-files", FileStorageController, :pending_files
   end
 
   scope "/api", StudyPortalWeb do
