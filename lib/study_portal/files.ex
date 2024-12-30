@@ -101,4 +101,19 @@ defmodule StudyPortal.Files do
   def change_file_storage(%FileStorage{} = file_storage, attrs \\ %{}) do
     FileStorage.changeset(file_storage, attrs)
   end
+
+
+  @doc """
+  Fetches files with a given status.
+
+  ## Examples
+
+      iex> get_files_by_status("pending")
+      [%FileStorage{}, ...]
+
+  """
+  def get_files_by_status(status) do
+    Repo.all(from fs in FileStorage, where: fs.status == ^status)
+  end
+
 end
