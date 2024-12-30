@@ -5,10 +5,21 @@ defmodule StudyPortalWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug Guardian.Plug.Pipeline,
+      module: StudyPortal.Users.Guardian,
+      error_handler: StudyPortal.Users.AuthErrorHandler
+
+      plug Guardian.Plug.VerifyHeader, scheme: "Bearer"
+      plug Guardian.Plug.LoadResource, allow_blank: "false"
+  end
+
   scope "/api", StudyPortalWeb do
     pipe_through :api
 
     get "/ping", PingController, :index
+    post "/register", AuthController, :register
+    post "/login", AuthController, :login
     get "/get-file/:id", FileStorageController, :give_get_url
     get "/course-mat/:course_code", CourseMaterialController, :index
     get "/pending-files", FileStorageController, :pending_files
@@ -24,6 +35,13 @@ defmodule StudyPortalWeb.Router do
     post "/add-bookmark", BookmarkPinController, :add_bookmark
     post "/remove-bookmark", BookmarkPinController, :remove_bookmark
     post "/remove-pin", BookmarkPinController, :remove_pin
+  end
+    
+  scope "/api", StudyPortalWeb do
+    pipe_through [:api, :auth]
+
+    get "/protected", AuthController, :protected
+    post "/logout", AuthController, :logout
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

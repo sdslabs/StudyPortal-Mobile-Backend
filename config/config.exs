@@ -11,6 +11,11 @@ config :study_portal,
   ecto_repos: [StudyPortal.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+# Configures Guardian
+config :study_portal, StudyPortal.Users.Guardian,
+  issuer: "StudyPortal",
+  secret_key: "HAYASAKA_IS_BEST_GIRL"
+
 # Configures the endpoint
 config :study_portal, StudyPortalWeb.Endpoint,
   url: [host: "localhost"],
@@ -60,7 +65,6 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
-
 config :ex_aws,
   access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
   secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
