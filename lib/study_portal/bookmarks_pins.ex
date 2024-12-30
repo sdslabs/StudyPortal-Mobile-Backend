@@ -1,9 +1,12 @@
+import Ecto.Changeset
+
 defmodule StudyPortal.BookmarksPins do
   @moduledoc """
   The BookmarksPins context.
   """
 
   import Ecto.Query, warn: false
+  alias StudyPortal.BookmarksPins
   alias StudyPortal.Repo
 
   alias StudyPortal.BookmarksPins.BookmarkPin
@@ -100,5 +103,9 @@ defmodule StudyPortal.BookmarksPins do
   """
   def change_bookmark_pin(%BookmarkPin{} = bookmark_pin, attrs \\ %{}) do
     BookmarkPin.changeset(bookmark_pin, attrs)
+  end
+
+  def get_bookmarks_pins_by_userid(userid) do
+    Repo.get_by(BookmarkPin, userid: userid)
   end
 end
