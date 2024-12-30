@@ -33,10 +33,10 @@ defmodule StudyPortalWeb.Router do
     get "/bookmarks", BookmarkPinController, :get_bookmarks
     post "/add-pin", BookmarkPinController, :add_pin
     post "/add-bookmark", BookmarkPinController, :add_bookmark
-    post "/remove-bookmark", BookmarkPinController, :remove_bookmark
-    post "/remove-pin", BookmarkPinController, :remove_pin
+    delete "/remove-bookmark", BookmarkPinController, :remove_bookmark
+    delete "/remove-pin", BookmarkPinController, :remove_pin
   end
-    
+
   scope "/api", StudyPortalWeb do
     pipe_through [:api, :auth]
 
