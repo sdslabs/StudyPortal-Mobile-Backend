@@ -6,8 +6,8 @@ defmodule StudyPortalWeb.CourseController do
 
   action_fallback StudyPortalWeb.FallbackController
 
-  def index(conn, _params) do
-    courses = Courses.list_courses()
+  def index(conn, %{"branch_id" => branch_id}) do
+    courses = Courses.get_courses_by_branch(branch_id)
     render(conn, :index, courses: courses)
   end
 
