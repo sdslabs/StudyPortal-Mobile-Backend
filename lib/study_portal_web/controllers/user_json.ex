@@ -22,6 +22,7 @@ defmodule StudyPortalWeb.UserJSON do
       name: user.name,
       arcus_id: user.arcus_id,
       password_hash: user.password_hash,
+      is_admin: user.is_admin,
       password: user.password
     }
   end

@@ -7,6 +7,7 @@ defmodule StudyPortal.Users.User do
     field :enrollment_number, :integer
     field :arcus_id, :integer
     field :password_hash, :string
+    field :is_admin, :boolean, default: false
     field :password, :string, virtual: true
 
     timestamps(type: :utc_datetime)
