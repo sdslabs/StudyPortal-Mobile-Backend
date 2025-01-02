@@ -14,12 +14,45 @@ defmodule StudyPortalWeb.Router do
     plug Guardian.Plug.LoadResource, allow_blank: "false"
   end
 
+  pipeline :admincheck do
+    plug :ensure_admin
+
+    defp ensure_admin(conn, _opts) do
+      current_user = Guardian.Plug.current_resource(conn)
+
+      if current_user && current_user.is_admin do
+        conn
+      else
+        conn
+        |> put_status(:forbidden)
+        |> json(%{error: "Not authorized"})
+        |> halt()
+      end
+    end
+  end
+
   scope "/api", StudyPortalWeb do
     pipe_through :api
     # no-auth
     get "/ping", PingController, :index
     post "/register", AuthController, :register
     post "/login", AuthController, :login
+  end
+
+  scope "/api", StudyPortalWeb do
+    pipe_through [:api, :auth, :admincheck]
+
+    # admin
+    delete "/reject-file", FileStorageController, :delete
+    patch "/approve-file", FileStorageController, :update
+    get "/pending-files", FileStorageController, :pending_files
+  end
+
+  scope "/api", StudyPortalWeb do
+    pipe_through [:api, :auth]
+
+    get "/protected", AuthController, :protected
+    post "/logout", AuthController, :logout
     # user
     get "/get-file/:id", FileStorageController, :give_get_url
     get "/course-mat/:course_code", CourseMaterialController, :index
@@ -33,17 +66,6 @@ defmodule StudyPortalWeb.Router do
     post "/add-bookmark", BookmarkPinController, :add_bookmark
     delete "/remove-bookmark", BookmarkPinController, :remove_bookmark
     delete "/remove-pin", BookmarkPinController, :remove_pin
-    # admin
-    delete "/reject-file", FileStorageController, :delete
-    patch "/approve-file", FileStorageController, :update
-    get "/pending-files", FileStorageController, :pending_files
-  end
-
-  scope "/api", StudyPortalWeb do
-    pipe_through [:api, :auth]
-
-    get "/protected", AuthController, :protected
-    post "/logout", AuthController, :logout
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
