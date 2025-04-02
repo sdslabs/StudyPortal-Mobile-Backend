@@ -70,6 +70,10 @@ config :ex_aws,
     region: System.get_env("S3_REGION")
   ]
 
+config :elixir_auth_google,
+  client_id: System.get_env("GOOGLE_CLIENT_ID"),
+  client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
