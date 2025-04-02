@@ -22,7 +22,13 @@ defmodule StudyPortalWeb.UserJSON do
       name: user.name,
       arcus_id: user.arcus_id,
       hash: user.hash,
-      salt: user.salt
+      salt: user.salt,
+      email: user.email,
+      google_id: user.google_id,
+      avatar: user.avatar,
+      token: user.token,
+      refresh_token: user.refresh_token
+
     }
   end
 end
