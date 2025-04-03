@@ -29,10 +29,6 @@ config :study_portal, StudyPortalWeb.Endpoint,
     tailwind: {Tailwind, :install_and_run, [:study_portal, ~w(--watch)]}
   ]
 
-config :ueberauth, Ueberauth.Strategy.Google.OAuth,
-  client_id: "374005446796-jh0gd262ce6tlel87a8ce2qqkka8f1gn.apps.googleusercontent.com",
-  client_secret: "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"
-
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

@@ -58,6 +58,7 @@ defmodule StudyPortal.MixProject do
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.15"},
+      {:envvar, "~> 0.1.0"},
       {:sweet_xml, "~> 0.7"},
       {:elixir_auth_google, "~> 1.6.9"},
       {:ueberauth, "~> 0.10.0"},

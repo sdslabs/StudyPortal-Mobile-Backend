@@ -1,5 +1,5 @@
 import Config
-
+require Envvar
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
 # system starts, so it is typically used to load production configuration
@@ -18,6 +18,12 @@ import Config
 # script that automatically sets the env var above.
 
 Dotenv.load()
+
+Envvar.load()
+
+config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+    client_id: System.get_env("GOOGLE_CLIENT_ID") || raise("environment variable GOOGLE_CLIENT_ID is missing"),
+    client_secret: System.get_env("GOOGLE_CLIENT_SECRET") || raise("environment variable GOOGLE_CLIENT_SECRET is missing")
 
 if System.get_env("PHX_SERVER") do
   config :study_portal, StudyPortalWeb.Endpoint, server: true
@@ -76,4 +82,5 @@ if config_env() == :prod do
       host: "#{System.get_env("S3_BUCKET_NAME")}.s3.#{System.get_env("S3_REGION")}.amazonaws.com",
       region: System.get_env("S3_REGION")
     ]
+
 end
