@@ -3,7 +3,6 @@ defmodule StudyPortal.Repo.Migrations.AddGoogleAuthToUsers do
 
   def change do
     alter table(:users) do
-      # Keeping enrollment_number and arcus_id as integers
       add :email, :string
       add :google_id, :string
       add :avatar, :string
