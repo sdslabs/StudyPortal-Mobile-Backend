@@ -106,6 +106,7 @@ defmodule StudyPortal.Courses do
   def get_course_by_code(course_code) do
     Repo.get_by(Course, course_code: course_code)
   end
+  
   def get_courses_by_branch(branch_id) do
     from(c in Course, where: c.branch == ^branch_id)
     |> Repo.all()
