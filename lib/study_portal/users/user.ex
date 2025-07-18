@@ -3,11 +3,16 @@ defmodule StudyPortal.Users.User do
   import Ecto.Changeset
 
   schema "users" do
+    field :enrollment_number, :string
     field :name, :string
-    field :enrollment_number, :integer
-    field :arcus_id, :integer
+    field :arcus_id, :string
     field :hash, :string
     field :salt, :string
+    field :email, :string
+    field :google_id, :string
+    field :avatar, :string
+    field :token, :string
+    field :refresh_token, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -15,7 +20,9 @@ defmodule StudyPortal.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :enrollment_number, :arcus_id, :hash, :salt])
-    |> validate_required([:name, :enrollment_number, :arcus_id, :hash, :salt])
+    |> cast(attrs, [:name, :email, :google_id, :avatar, :token, :refresh_token])
+    |> validate_required([:name, :email])
+    |> unique_constraint(:email)
+    |> unique_constraint(:google_id)
   end
 end
