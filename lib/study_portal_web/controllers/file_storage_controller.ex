@@ -115,8 +115,8 @@ defmodule StudyPortalWeb.FileStorageController do
             }
 
             case StudyPortal.Files.create_file_storage(file_storage_attrs) do
-              {:ok, _file_storage} ->
-                json(conn, %{url: presigned_url})
+              {:ok, file_storage} ->
+                json(conn, %{url: presigned_url, id: file_storage.id})
 
               {:error, changeset} ->
                 conn
