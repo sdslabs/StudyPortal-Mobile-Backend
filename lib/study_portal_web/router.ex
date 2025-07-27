@@ -3,10 +3,26 @@ defmodule StudyPortalWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+  end
+
+  scope "/auth", StudyPortalWeb do
+    pipe_through :api
+
+    get "/ping", PingController, :index
+    get "/google", GoogleAuthController, :index
+    get "/google/callback", GoogleAuthController, :callback
+    get "/logout", GoogleAuthController, :logout
+  end
+
+  pipeline :authenticated_api do
+    plug :accepts, ["json"]
+    plug :fetch_session
+    plug StudyPortalWeb.AuthPlug
   end
 
   scope "/api", StudyPortalWeb do
-    pipe_through :api
+    pipe_through :authenticated_api
 
     get "/ping", PingController, :index
     get "/get-file/:id", FileStorageController, :give_get_url
