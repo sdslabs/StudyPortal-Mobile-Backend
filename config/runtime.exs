@@ -18,7 +18,6 @@ import Config
 # script that automatically sets the env var above.
 
 Dotenv.load!()
-
 config :ueberauth, Ueberauth.Strategy.Google.OAuth,
     client_id: System.get_env("GOOGLE_CLIENT_ID") || raise("environment variable GOOGLE_CLIENT_ID is missing"),
     client_secret: System.get_env("GOOGLE_CLIENT_SECRET") || raise("environment variable GOOGLE_CLIENT_SECRET is missing")

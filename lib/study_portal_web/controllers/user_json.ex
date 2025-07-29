@@ -28,7 +28,6 @@ defmodule StudyPortalWeb.UserJSON do
       avatar: user.avatar,
       token: user.token,
       refresh_token: user.refresh_token
-
     }
   end
 end
