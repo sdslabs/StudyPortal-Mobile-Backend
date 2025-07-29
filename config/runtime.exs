@@ -18,6 +18,18 @@ import Config
 # script that automatically sets the env var above.
 
 Dotenv.load!()
+config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+    client_id: System.get_env("GOOGLE_CLIENT_ID") || raise("environment variable GOOGLE_CLIENT_ID is missing"),
+    client_secret: System.get_env("GOOGLE_CLIENT_SECRET") || raise("environment variable GOOGLE_CLIENT_SECRET is missing")
+
+config :ex_aws,
+    access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
+    secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
+    s3: [
+      scheme: "https://",
+      host: "s3.#{System.get_env("S3_REGION")}.amazonaws.com",
+      region: System.get_env("S3_REGION")
+    ]
 
 if System.get_env("PHX_SERVER") do
   config :study_portal, StudyPortalWeb.Endpoint, server: true
@@ -76,4 +88,5 @@ if config_env() == :prod do
       host: "#{System.get_env("S3_BUCKET_NAME")}.s3.#{System.get_env("S3_REGION")}.amazonaws.com",
       region: System.get_env("S3_REGION")
     ]
+
 end

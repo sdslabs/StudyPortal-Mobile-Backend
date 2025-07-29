@@ -3,29 +3,25 @@ defmodule StudyPortal.Users.User do
   import Ecto.Changeset
 
   schema "users" do
+    field :enrollment_number, :string
     field :name, :string
-    field :enrollment_number, :integer
-    field :arcus_id, :integer
-    field :password_hash, :string
-    field :is_admin, :boolean, default: false
-    field :password, :string, virtual: true
-
+    field :arcus_id, :string
+    field :hash, :string
+    field :salt, :string
+    field :email, :string
+    field :google_id, :string
+    field :avatar, :string
+    field :token, :string
+    field :refresh_token, :string
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :enrollment_number, :arcus_id, :password])
-    |> validate_required([:name, :enrollment_number, :arcus_id, :password])
-    |> validate_length(:password, min: 6)
-    |> put_password_hash()
-  end
-
-  defp put_password_hash(changeset) do
-    case get_change(changeset, :password) do
-      nil -> changeset
-      password -> put_change(changeset, :password_hash, Bcrypt.hash_pwd_salt(password))
-    end
+    |> cast(attrs, [:name, :email, :google_id, :avatar, :token, :refresh_token])
+    |> validate_required([:name, :email])
+    |> unique_constraint(:email)
+    |> unique_constraint(:google_id)
   end
 end

@@ -65,6 +65,16 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :ueberauth, Ueberauth,
+providers: [
+  google: {Ueberauth.Strategy.Google, [
+    default_scope: "email profile",
+    prompt: "select_account",
+    response_type: "code"
+  ]}
+]
+
 config :ex_aws,
   access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
   secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),

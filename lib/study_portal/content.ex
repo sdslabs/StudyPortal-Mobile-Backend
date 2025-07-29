@@ -13,7 +13,6 @@ defmodule StudyPortal.Content do
         join: c in Course,
         on: c.id == fs.course_id,
         where: c.course_code == ^course_code,
-        where: fs.status == :approved,
         select: %{
           file_id: fs.id,
           file_name: fs.name,
@@ -21,7 +20,8 @@ defmodule StudyPortal.Content do
           file_type: fs.type,
           file_s3_url: fs.s3_url,
           course_code: c.course_code,
-          inserted_at: fs.inserted_at
+          inserted_at: fs.inserted_at,
+          file_status: fs.status
         }
 
     Repo.all(query)
