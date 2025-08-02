@@ -4,7 +4,7 @@ import Config
 config :study_portal, StudyPortal.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "db",
+  hostname: "localhost", # Switch to db for docker compose
   database: "studyportal",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,

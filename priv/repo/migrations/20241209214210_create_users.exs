@@ -3,9 +3,9 @@ defmodule StudyPortal.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :enrollment_number, :integer
+      add :enrollment_number, :string
       add :name, :string
-      add :arcus_id, :integer
+      add :arcus_id, :string
       add :password_hash, :string
       add :is_admin, :boolean, default: false
       add :password, :string, virtual: true
