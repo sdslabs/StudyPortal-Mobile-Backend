@@ -6,8 +6,7 @@ defmodule StudyPortal.Users.User do
     field :enrollment_number, :string
     field :name, :string
     field :arcus_id, :string
-    field :hash, :string
-    field :salt, :string
+    field :password_hash, :string
     field :email, :string
     field :google_id, :string
     field :avatar, :string
