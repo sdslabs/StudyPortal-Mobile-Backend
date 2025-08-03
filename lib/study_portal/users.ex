@@ -101,4 +101,19 @@ defmodule StudyPortal.Users do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+
+  def authenticate_user(enrollment_number, password) do
+    user = Repo.get_by(User, enrollment_number: enrollment_number)
+
+    case user do
+      nil -> {:error, :invalid_credentials}
+      user ->
+        case Bcrypt.verify_pass(password, user.password_hash) do
+          true -> {:ok, user}
+          false -> {:error, :invalid_credentials}
+        end
+    end
+  end
+
 end
