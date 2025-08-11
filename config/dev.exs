@@ -4,7 +4,7 @@ import Config
 config :study_portal, StudyPortal.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "db",
+  hostname: "db", # Switch to localhost for local db
   database: "studyportal",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
