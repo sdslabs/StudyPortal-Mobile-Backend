@@ -44,16 +44,23 @@ defmodule StudyPortalWeb.BookmarkPinController do
     end
   end
 
-  # TODO: Currently this accepts user_id as a body parameter. Once auth is implemented,
-  # This is to be recovered from JWT instead.
-  def get_pins(conn, %{"user_id" => user_id}) do
-    pins = BookmarksPins.get_bookmarks_pins_by_userid(user_id).pins
-    render(conn, :branches, bookmark_pin: pins)
+  def get_pins(conn, %{}) do
+    user_id = conn.assigns.current_user.id
+
+    case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
+      nil -> render(conn, :branches, bookmark_pin: [])
+      bp  -> render(conn, :branches, bookmark_pin: bp.pins)
+    end
   end
 
-  def get_bookmarks(conn, %{"user_id" => user_id}) do
-    bookmarks = BookmarksPins.get_bookmarks_pins_by_userid(user_id).bookmarks
-    render(conn, :files, bookmark_pin: bookmarks)
+
+  def get_bookmarks(conn, %{}) do 
+    user_id = conn.assigns.current_user.id
+
+    case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
+      nil -> render(conn, :files, bookmark_pin: [])
+      bp  -> render(conn, :files, bookmark_pin: bp.bookmarks)
+    end
   end
 
   # TODO: Add some special message if pin/bookmark already exists
