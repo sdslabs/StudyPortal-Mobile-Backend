@@ -54,7 +54,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
   end
 
 
-  def get_bookmarks(conn, %{}) do 
+  def get_bookmarks(conn, %{}) do
     user_id = conn.assigns.current_user.id
 
     case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
@@ -63,12 +63,9 @@ defmodule StudyPortalWeb.BookmarkPinController do
     end
   end
 
-  # TODO: Add some special message if pin/bookmark already exists
-  # TODO: Check if branch_id is a valid either by changeset or directly in controller
-  def add_pin(conn, %{"user_id" => user_id, "branch_id" => branch_id}) do
+  def add_pin(conn, %{"branch_id" => branch_id}) do
     try do
-      # Temporary. Integrate auth to only allow registered users
-      Users.get_user!(user_id)
+      user_id = user_id = conn.assigns.current_user.id
 
       bookmarks_pins =
         case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
@@ -112,8 +109,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
 
   def add_bookmark(conn, %{"user_id" => user_id, "file_id" => file_id}) do
     try do
-      # Temporary. Integrate auth to only allow registered users
-      Users.get_user!(user_id)
+      user_id = conn.assigns.current_user.id
 
       bookmarks_pins =
         case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
@@ -157,8 +153,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
 
   def remove_pin(conn, %{"user_id" => user_id, "branch_id" => branch_id}) do
     try do
-      # Temporary. Integrate auth to only allow registered users
-      Users.get_user!(user_id)
+      user_id = conn.assigns.current_user.id
 
       bookmarks_pins =
         case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
@@ -201,8 +196,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
 
   def remove_bookmark(conn, %{"user_id" => user_id, "file_id" => file_id}) do
     try do
-      # Temporary. Integrate auth to only allow registered users
-      Users.get_user!(user_id)
+      user_id = conn.assigns.current_user.id
 
       bookmarks_pins =
         case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
