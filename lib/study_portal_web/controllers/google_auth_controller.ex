@@ -13,34 +13,48 @@ defmodule StudyPortalWeb.GoogleAuthController do
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    user_params = %{
-      google_id: auth.uid,
-      email: auth.info.email,
-      name: auth.info.name,
-      avatar: auth.info.image,
-      token: auth.credentials.token,
-      refresh_token: auth.credentials.refresh_token
-    }
+    email = String.downcase(auth.info.email)
 
-    case find_or_create_user(user_params) do
-      {:ok, user} ->
-        conn
-        |> put_session(:current_user_id, user.id)
-        |> configure_session(renew: true)
-        |> json(%{success: true, user: %{id: user.id, name: user.name, email: user.email}})
+    if String.match?(email, ~r/@([a-z0-9\-]+\.)?iitr\.ac\.in$/) do
+      user_params = %{
+        google_id: auth.uid,
+        email: email,
+        name: auth.info.name,
+        avatar: auth.info.image,
+        token: auth.credentials.token,
+        refresh_token: auth.credentials.refresh_token
+      }
 
-      {:error, changeset} ->
-        errors =
-          changeset
-          |> Ecto.Changeset.traverse_errors(fn {msg, opts} ->
-            Enum.reduce(opts, msg, fn {key, value}, acc ->
-              String.replace(acc, "%{#{key}}", to_string(value))
+      case find_or_create_user(user_params) do
+        {:ok, user} ->
+          conn
+          |> put_session(:current_user_id, user.id)
+          |> configure_session(renew: true)
+          |> json(%{
+            success: true,
+            user: %{id: user.id, name: user.name, email: user.email}
+          })
+
+        {:error, changeset} ->
+          errors =
+            Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+              Enum.reduce(opts, msg, fn {key, value}, acc ->
+                String.replace(acc, "%{#{key}}", to_string(value))
+              end)
             end)
-          end)
 
-        conn
-        |> put_status(401)
-        |> json(%{success: false, error: "Could not create user", errors: errors})
+          conn
+          |> put_status(401)
+          |> json(%{
+            success: false,
+            error: "Could not create user",
+            errors: errors
+          })
+      end
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> json(%{success: false, error: "Only iitr.ac.in emails are allowed"})
     end
   end
 
