@@ -13,6 +13,7 @@ defmodule StudyPortal.Users.User do
     field :avatar, :string
     field :token, :string
     field :refresh_token, :string
+
     timestamps(type: :utc_datetime)
   end
 

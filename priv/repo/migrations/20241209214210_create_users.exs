@@ -6,9 +6,8 @@ defmodule StudyPortal.Repo.Migrations.CreateUsers do
       add :enrollment_number, :integer
       add :name, :string
       add :arcus_id, :integer
-      add :password_hash, :string
-      add :is_admin, :boolean, default: false
-      add :password, :string, virtual: true
+      add :hash, :string
+      add :salt, :string
 
       timestamps(type: :utc_datetime)
     end
