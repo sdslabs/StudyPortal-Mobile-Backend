@@ -44,7 +44,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
     end
   end
 
-  def get_pins(conn, %{}) do
+  def get_pins(conn, _params) do
     user_id = conn.assigns.current_user.id
 
     case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
@@ -54,7 +54,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
   end
 
 
-  def get_bookmarks(conn, %{}) do
+  def get_bookmarks(conn, _params) do
     user_id = conn.assigns.current_user.id
 
     case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
@@ -107,7 +107,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
     end
   end
 
-  def add_bookmark(conn, %{"user_id" => user_id, "file_id" => file_id}) do
+  def add_bookmark(conn, %{"file_id" => file_id}) do
     try do
       user_id = conn.assigns.current_user.id
 
@@ -151,7 +151,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
     end
   end
 
-  def remove_pin(conn, %{"user_id" => user_id, "branch_id" => branch_id}) do
+  def remove_pin(conn, %{"branch_id" => branch_id}) do
     try do
       user_id = conn.assigns.current_user.id
 
@@ -194,7 +194,7 @@ defmodule StudyPortalWeb.BookmarkPinController do
     end
   end
 
-  def remove_bookmark(conn, %{"user_id" => user_id, "file_id" => file_id}) do
+  def remove_bookmark(conn, %{"file_id" => file_id}) do
     try do
       user_id = conn.assigns.current_user.id
 
