@@ -44,24 +44,28 @@ defmodule StudyPortalWeb.BookmarkPinController do
     end
   end
 
-  # TODO: Currently this accepts user_id as a body parameter. Once auth is implemented,
-  # This is to be recovered from JWT instead.
-  def get_pins(conn, %{"user_id" => user_id}) do
-    pins = BookmarksPins.get_bookmarks_pins_by_userid(user_id).pins
-    render(conn, :branches, bookmark_pin: pins)
+  def get_pins(conn, _params) do
+    user_id = conn.assigns.current_user.id
+
+    case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
+      nil -> render(conn, :branches, bookmark_pin: [])
+      bp  -> render(conn, :branches, bookmark_pin: bp.pins)
+    end
   end
 
-  def get_bookmarks(conn, %{"user_id" => user_id}) do
-    bookmarks = BookmarksPins.get_bookmarks_pins_by_userid(user_id).bookmarks
-    render(conn, :files, bookmark_pin: bookmarks)
+
+  def get_bookmarks(conn, _params) do
+    user_id = conn.assigns.current_user.id
+
+    case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
+      nil -> render(conn, :files, bookmark_pin: [])
+      bp  -> render(conn, :files, bookmark_pin: bp.bookmarks)
+    end
   end
 
-  # TODO: Add some special message if pin/bookmark already exists
-  # TODO: Check if branch_id is a valid either by changeset or directly in controller
-  def add_pin(conn, %{"user_id" => user_id, "branch_id" => branch_id}) do
+  def add_pin(conn, %{"branch_id" => branch_id}) do
     try do
-      # Temporary. Integrate auth to only allow registered users
-      Users.get_user!(user_id)
+      user_id = user_id = conn.assigns.current_user.id
 
       bookmarks_pins =
         case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
@@ -103,10 +107,9 @@ defmodule StudyPortalWeb.BookmarkPinController do
     end
   end
 
-  def add_bookmark(conn, %{"user_id" => user_id, "file_id" => file_id}) do
+  def add_bookmark(conn, %{"file_id" => file_id}) do
     try do
-      # Temporary. Integrate auth to only allow registered users
-      Users.get_user!(user_id)
+      user_id = conn.assigns.current_user.id
 
       bookmarks_pins =
         case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
@@ -148,10 +151,9 @@ defmodule StudyPortalWeb.BookmarkPinController do
     end
   end
 
-  def remove_pin(conn, %{"user_id" => user_id, "branch_id" => branch_id}) do
+  def remove_pin(conn, %{"branch_id" => branch_id}) do
     try do
-      # Temporary. Integrate auth to only allow registered users
-      Users.get_user!(user_id)
+      user_id = conn.assigns.current_user.id
 
       bookmarks_pins =
         case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
@@ -192,10 +194,9 @@ defmodule StudyPortalWeb.BookmarkPinController do
     end
   end
 
-  def remove_bookmark(conn, %{"user_id" => user_id, "file_id" => file_id}) do
+  def remove_bookmark(conn, %{"file_id" => file_id}) do
     try do
-      # Temporary. Integrate auth to only allow registered users
-      Users.get_user!(user_id)
+      user_id = conn.assigns.current_user.id
 
       bookmarks_pins =
         case BookmarksPins.get_bookmarks_pins_by_userid(user_id) do
