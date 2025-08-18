@@ -40,6 +40,7 @@ defmodule StudyPortalWeb.Router do
     post "/add-bookmark", BookmarkPinController, :add_bookmark
     post "/remove-bookmark", BookmarkPinController, :remove_bookmark
     post "/remove-pin", BookmarkPinController, :remove_pin
+    get "/user-info", UserController, :user_info
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

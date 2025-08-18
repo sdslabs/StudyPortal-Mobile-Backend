@@ -40,4 +40,10 @@ defmodule StudyPortalWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def user_info(conn, _params) do
+    user_id = conn.assigns.current_user.id
+    user = Users.get_user!(user_id)
+    render(conn, :show_basic_info, user: user)
+  end
 end
