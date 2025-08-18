@@ -15,6 +15,10 @@ defmodule StudyPortalWeb.UserJSON do
     %{data: data(user)}
   end
 
+  def show_basic_info(%{user: user}) do
+    %{data: basic_info(user)}
+  end
+
   defp data(%User{} = user) do
     %{
       id: user.id,
@@ -27,6 +31,17 @@ defmodule StudyPortalWeb.UserJSON do
       avatar: user.avatar,
       token: user.token,
       refresh_token: user.refresh_token
+    }
+  end
+
+  defp basic_info(%User{} = user) do
+    %{
+      id: user.id,
+      enrollment_number: user.enrollment_number,
+      name: user.name,
+      email: user.email,
+      google_id: user.google_id,
+      avatar: user.avatar,
     }
   end
 end
